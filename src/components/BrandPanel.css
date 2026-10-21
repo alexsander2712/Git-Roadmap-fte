@@ -1,0 +1,80 @@
+
+.brand-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 54px clamp(30px, 5vw, 65px);
+  background: #091b2a;
+  color: #ffffff;
+}
+
+.brand-panel__content {
+  margin-top: 48px;
+}
+
+.brand-panel__content h1 {
+  max-width: 420px;
+  margin: 0 0 16px;
+  font-size: clamp(30px, 3vw, 39px);
+  line-height: 1.13;
+  letter-spacing: -1px;
+}
+
+.brand-panel__intro {
+  max-width: 390px;
+  margin: 0 0 28px;
+  color: #e0e7ed;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.brand-panel__benefits {
+  display: grid;
+  gap: 17px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.brand-panel__benefits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.brand-panel__check {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: #d83232;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .brand-panel {
+    padding: 30px 26px;
+  }
+
+  .brand-panel__content {
+    margin-top: 28px;
+  }
+
+  .brand-panel__content h1 {
+    font-size: 30px;
+  }
+
+  .brand-panel__intro {
+    margin-bottom: 18px;
+  }
+
+  .brand-panel__benefits {
+    gap: 10px;
+  }
+}

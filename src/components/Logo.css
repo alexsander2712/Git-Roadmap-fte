@@ -1,0 +1,28 @@
+
+.gr-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+}
+
+.gr-logo__symbol {
+  width: 52px;
+  height: 42px;
+  flex-shrink: 0;
+  color: #d83232;
+}
+
+.gr-logo__word {
+  white-space: nowrap;
+}
+
+.gr-logo__git {
+  color: #f5f7fa;
+}
+
+.gr-logo__roadmap {
+  color: #e54a48;
+}
