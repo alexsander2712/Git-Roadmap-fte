@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Repositories from "./pages/Repositories/Repositories";
 import Roadmap from "./pages/Roadmap/Roadmap";
 import Profile from "./pages/Profile/Profile";
+import Settings from "./pages/Settings/Settings";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/repositorios" element={<Repositories />} />
         <Route path="/roadmaps/:id" element={<Roadmap />} />
         <Route path="/perfil" element={<Profile />} />
+        <Route path="/configuracoes" element={<Settings />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

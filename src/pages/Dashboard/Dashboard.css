@@ -1,154 +1,56 @@
+/* Estilos específicos da página Início.
+   Layout (sidebar, topbar, rodapé) e elementos base ficam em components/AppLayout.css */
 
-.dashboard {
-  display: flex;
-  min-height: 100vh;
-  background: #f3f6f8;
-  color: #101c28;
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
+/* ===== Painéis ===== */
+
+.dashboard-panel {
+  overflow: hidden;
+  margin-bottom: 24px;
+  border: 1px solid #e0e6ea;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 3px 12px #172b3b08;
 }
 
-.dashboard-sidebar {
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex: 0 0 208px;
-  flex-direction: column;
-  height: 100vh;
-  min-height: 520px;
-  background: #091b2a;
-  color: #f5f7fa;
-}
-
-.dashboard-brand {
+.dashboard-panel__heading {
   display: flex;
   align-items: center;
-  gap: 5px;
-  min-height: 65px;
-  padding: 0 13px;
-  border-bottom: 1px solid #ffffff12;
-  color: #e34240;
-  text-decoration: none;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 19px 20px;
+  border-bottom: 1px solid #e5e9ed;
 }
 
-.dashboard-brand svg {
-  width: 36px;
-  flex: 0 0 36px;
-}
-
-.dashboard-brand span {
-  font-size: 14px;
-  letter-spacing: -0.5px;
-}
-
-.dashboard-brand b {
-  color: #f5f7fa;
-}
-
-.dashboard-brand strong {
-  color: #e34240;
-}
-
-.dashboard-nav {
-  display: grid;
-  align-content: start;
-  gap: 5px;
-  padding: 20px 10px;
-}
-
-.dashboard-nav__item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 39px;
-  padding: 0 9px;
-  border-radius: 6px;
-  color: #d9e1e8;
-  font-size: 13px;
-  text-decoration: none;
-  transition: background 0.2s, color 0.2s;
-}
-
-.dashboard-nav__item:hover,
-.dashboard-nav__item.is-active {
-  background: #ffffff12;
-  color: #fff;
-}
-
-.dashboard-nav__item.is-active {
-  box-shadow: inset 3px 0 #e34240;
-}
-
-.dashboard-main {
-  min-width: 0;
-  flex: 1;
-}
-
-.dashboard-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 16px;
-  height: 65px;
-  padding: 0 25px;
-  background: #091b2a;
-  color: #fff;
-}
-
-.dashboard-topbar__caption {
-  margin-right: auto;
-  color: #d9e1e8;
-  font-size: 12px;
-}
-
-.dashboard-user {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px;
-  border: 0;
-  background: transparent;
-  color: #fff;
-  cursor: pointer;
-}
-
-.dashboard-user__chevron {
-  font-size: 15px;
-}
-
-.dashboard-content {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 22px 17px 32px;
-}
-
-.dashboard-section {
-  padding-bottom: 19px;
-  border-bottom: 1px solid #aeb9c1;
-}
-
-.dashboard-heading {
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #aeb9c1;
-}
-
-.dashboard-heading h1 {
+.dashboard-panel__heading h2 {
   margin: 0;
-  color: #0c1925;
-  font-size: clamp(24px, 2.3vw, 29px);
-  letter-spacing: -0.7px;
+  font-size: 16px;
+  letter-spacing: -0.3px;
 }
 
-.dashboard-heading p {
+.dashboard-panel__heading p {
   margin: 5px 0 0;
-  color: #66737e;
-  font-size: 12px;
+  color: #7b8791;
+  font-size: 11px;
 }
+
+.dashboard-panel__link {
+  color: #b52d2d;
+  font-size: 12px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.dashboard-panel__link:hover {
+  text-decoration: underline;
+}
+
+/* ===== Roadmaps ===== */
 
 .roadmap-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  gap: 14px;
+  padding: 20px;
 }
 
 .roadmap-card {
@@ -156,10 +58,10 @@
   min-width: 0;
   flex-direction: column;
   padding: 12px;
-  border: 1px solid #e0e5e9;
-  border-radius: 11px;
+  border: 1px solid #e0e6ea;
+  border-radius: 10px;
   background: #fff;
-  box-shadow: 0 4px 9px #172b3b12;
+  box-shadow: 0 3px 10px #172b3b08;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -171,7 +73,7 @@
 .roadmap-card__preview {
   display: grid;
   place-items: center;
-  height: 110px;
+  height: 120px;
   overflow: hidden;
   border-radius: 9px;
   background: #f0f4f7;
@@ -184,10 +86,10 @@
   height: 100%;
 }
 
-.roadmap-card h2 {
+.roadmap-card h3 {
   overflow: hidden;
-  margin: 10px 0 9px;
-  color: #111c27;
+  margin: 12px 0 10px;
+  color: #172532;
   font-size: 14px;
   font-weight: 650;
   text-overflow: ellipsis;
@@ -196,64 +98,27 @@
 
 .roadmap-card__button {
   display: grid;
-  min-height: 31px;
+  min-height: 33px;
   place-items: center;
-  border: 1px solid #b94a47;
+  border: 1px solid #d83232;
   border-radius: 6px;
-  color: #a62d2a;
+  color: #b52d2d;
   font-size: 12px;
+  font-weight: 700;
   text-decoration: none;
   transition: background 0.2s, color 0.2s;
 }
 
-.roadmap-card__button:hover {
-  background: #fff0f0;
-}
-
-.roadmap-card__button--primary {
-  border-color: #d83232;
+.roadmap-card__button:hover,
+.roadmap-card__button:focus-visible {
   background: #d83232;
   color: #fff;
-  box-shadow: 0 2px 0 #ad2525;
 }
 
-.roadmap-card__button--primary:hover {
-  background: #bf2929;
-  color: #fff;
-}
-
-.projects-section {
-  padding-top: 12px;
-}
-
-.projects-section__heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 9px;
-}
-
-.projects-section__heading h2 {
-  margin: 0;
-  font-size: 16px;
-  letter-spacing: -0.2px;
-}
-
-.projects-section__link {
-  color: #b42c2c;
-  font-size: 12px;
-  text-decoration: none;
-}
-
-.projects-section__link:hover {
-  text-decoration: underline;
-}
+/* ===== Tabela de projetos ===== */
 
 .projects-table-wrapper {
   overflow-x: auto;
-  border: 1px solid #e1e6ea;
-  border-radius: 9px;
-  background: #fff;
 }
 
 .projects-table {
@@ -265,8 +130,8 @@
 
 .projects-table th,
 .projects-table td {
-  padding: 12px 10px;
-  border-bottom: 1px solid #e0e5e9;
+  padding: 13px 20px;
+  border-bottom: 1px solid #e8ecef;
 }
 
 .projects-table th {
@@ -296,12 +161,14 @@
 .projects-table__action a {
   display: inline-grid;
   min-width: 57px;
-  min-height: 28px;
+  min-height: 30px;
   place-items: center;
   border-radius: 6px;
   background: #d83232;
   color: #fff;
+  font-weight: 700;
   text-decoration: none;
+  transition: background 0.2s;
 }
 
 .projects-table__action a:hover {
@@ -309,7 +176,7 @@
 }
 
 .dashboard-note {
-  margin: 10px 0 0;
+  margin: 0;
   color: #73808b;
   font-size: 11px;
   line-height: 1.5;
@@ -324,80 +191,34 @@
   white-space: nowrap;
 }
 
-@media (min-width: 1400px) {
-  .dashboard-content {
-    padding: 28px;
-  }
+/* ===== Responsivo ===== */
 
-  .roadmap-card__preview {
-    height: 130px;
-  }
-
-  .roadmap-card {
-    padding: 14px;
-  }
-}
-
-@media (max-width: 900px) {
-  .dashboard-sidebar {
-    flex-basis: 180px;
-  }
-
+@media (max-width: 1100px) {
   .roadmap-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .roadmap-card__preview {
-    height: 120px;
   }
 }
 
 @media (max-width: 560px) {
-  .dashboard-sidebar {
-    flex-basis: 62px;
-  }
-
-  .dashboard-brand {
-    justify-content: center;
-    padding: 0 8px;
-  }
-
-  .dashboard-brand svg {
-    width: 35px;
-  }
-
-  .dashboard-brand span,
-  .dashboard-nav__item span {
-    display: none;
-  }
-
-  .dashboard-nav {
-    padding: 15px 7px;
-  }
-
-  .dashboard-nav__item {
-    justify-content: center;
-    padding: 0;
-  }
-
-  .dashboard-topbar {
-    height: 58px;
-    padding: 0 12px;
-  }
-
-  .dashboard-content {
-    padding: 18px 10px;
-  }
-
   .roadmap-grid {
     grid-template-columns: 1fr;
+    padding: 14px;
   }
 
   .roadmap-card__preview {
     height: 140px;
   }
 
+  .dashboard-panel__heading {
+    padding: 16px 14px;
+  }
+
   .projects-table {
     min-width: 380px;
+  }
+
+  .projects-table th,
+  .projects-table td {
+    padding: 12px 14px;
   }
 }

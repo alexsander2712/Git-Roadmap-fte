@@ -1,6 +1,5 @@
-
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import AppLayout from "../../components/AppLayout";
 import "./Dashboard.css";
 
 const roadmaps = [
@@ -126,147 +125,81 @@ function RoadmapPreview({ variant }) {
   );
 }
 
-function SidebarIcon({ name }) {
-  const common = {
-    width: 18,
-    height: 18,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.7,
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    "aria-hidden": true,
-  };
-
-  const paths = {
-    home: <><path d="m3 10 9-7 9 7" /><path d="M5 9v12h14V9" /><path d="M9 21v-7h6v7" /></>,
-    projects: <><rect x="3" y="5" width="18" height="15" rx="2" /><path d="M3 9h18" /><path d="M8 5V3h8v2" /></>,
-    profile: <><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></>,
-    settings: <><circle cx="12" cy="12" r="3" /><path d="m19.4 15 .1.1 1.4 1.1-1.5 2.6-1.7-.7a8 8 0 0 1-1.8 1l-.3 1.9h-3l-.3-1.9a8 8 0 0 1-1.8-1l-1.7.7-1.5-2.6 1.5-1.2a7 7 0 0 1 0-2.1l-1.5-1.2 1.5-2.6 1.7.7a8 8 0 0 1 1.8-1L12.6 6h3l.3 1.9a8 8 0 0 1 1.8 1l1.7-.7 1.5 2.6-1.5 1.2a7 7 0 0 1 0 2.1Z" /></>,
-    logout: <><path d="M10 17l5-5-5-5" /><path d="M15 12H3" /><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7" /></>,
-  };
-
-  return <svg {...common}>{paths[name]}</svg>;
-}
-
 export default function Dashboard() {
-  const [active, setActive] = useState("Início");
-
-  const menu = [
-    { label: "Início", icon: "home", href: "/dashboard" },
-    { label: "Meus Projetos", icon: "projects", href: "/repositorios" },
-    { label: "Perfil", icon: "profile", href: "/perfil" },
-    { label: "Configurações", icon: "settings", href: "/configuracoes" },
-    { label: "Sair", icon: "logout", href: "/login" },
-  ];
-
   return (
-    <main className="dashboard">
-      <aside className="dashboard-sidebar">
-        <Link to="/dashboard" className="dashboard-brand" aria-label="GitRoadmap, início">
-          <svg viewBox="0 0 50 36" aria-hidden="true">
-            <g fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-              <path d="M4 18h12L27 7h12M16 18l11 11h12M27 7v22" />
-            </g>
-            <circle cx="4" cy="18" r="3.5" fill="currentColor" />
-            <circle cx="39" cy="7" r="3.5" fill="currentColor" />
-            <circle cx="39" cy="29" r="3.5" fill="currentColor" />
-          </svg>
-          <span><b>Git</b><strong>Roadmap</strong></span>
-        </Link>
+    <AppLayout breadcrumb="Início">
+      <header className="app-page-heading">
+        <div>
+          <span className="app-eyebrow">VISÃO GERAL</span>
+          <h1>Início</h1>
+          <p>Acompanhe a evolução dos seus projetos.</p>
+        </div>
+      </header>
 
-        <nav className="dashboard-nav" aria-label="Navegação principal">
-          {menu.map((item) => (
-            <Link
-              key={item.label}
-              to={item.href}
-              className={`dashboard-nav__item ${active === item.label ? "is-active" : ""}`}
-              onClick={() => setActive(item.label)}
-            >
-              <SidebarIcon name={item.icon} />
-              <span>{item.label}</span>
-            </Link>
-          ))}
-        </nav>
-      </aside>
+      <section className="dashboard-panel">
+        <div className="dashboard-panel__heading">
+          <div>
+            <h2>Seus Roadmaps</h2>
+            <p>{roadmaps.length} roadmaps disponíveis</p>
+          </div>
+        </div>
 
-      <section className="dashboard-main">
-        <header className="dashboard-topbar">
-          <span className="dashboard-topbar__caption">Área de trabalho</span>
-          <button
-            className="dashboard-user"
-            type="button"
-            aria-label="Perfil do usuário"
-            title="Perfil do usuário"
-          >
-            <SidebarIcon name="profile" />
-            <span className="dashboard-user__chevron">⌄</span>
-          </button>
-        </header>
-
-        <div className="dashboard-content">
-          <section className="dashboard-section">
-            <div className="dashboard-heading">
-              <h1>Seus Roadmaps</h1>
-              <p>Acompanhe a evolução dos seus projetos.</p>
-            </div>
-
-            <div className="roadmap-grid">
-              {roadmaps.map((roadmap) => (
-                <article className="roadmap-card" key={roadmap.id}>
-                  <div className="roadmap-card__preview">
-                    <RoadmapPreview variant={roadmap.variant} />
-                  </div>
-                  <h2 title={roadmap.name}>{roadmap.name}</h2>
-                  <Link
-                    className={`roadmap-card__button ${roadmap.id === 1 ? "roadmap-card__button--primary" : ""}`}
-                    to={`/roadmaps/${roadmap.id}`}
-                  >
-                    Ver
-                  </Link>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="projects-section">
-            <div className="projects-section__heading">
-              <h2>Seus Projetos</h2>
-              <Link to="/repositorios" className="projects-section__link">
-                Ver todos
+        <div className="roadmap-grid">
+          {roadmaps.map((roadmap) => (
+            <article className="roadmap-card" key={roadmap.id}>
+              <div className="roadmap-card__preview">
+                <RoadmapPreview variant={roadmap.variant} />
+              </div>
+              <h3 title={roadmap.name}>{roadmap.name}</h3>
+              <Link
+                className="roadmap-card__button"
+                to={`/roadmaps/${roadmap.id}`}
+              >
+                Ver
               </Link>
-            </div>
-
-            <div className="projects-table-wrapper">
-              <table className="projects-table">
-                <thead>
-                  <tr>
-                    <th>Nome do Projeto</th>
-                    <th>Data</th>
-                    <th><span className="sr-only">Ações</span></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {projects.map((project) => (
-                    <tr key={project.id}>
-                      <td>{project.name}</td>
-                      <td>{project.date}</td>
-                      <td className="projects-table__action">
-                        <Link to="/repositorios">Ver</Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <p className="dashboard-note">
-              Exibindo dados demonstrativos. Seus repositórios reais serão carregados após a integração com o backend.
-            </p>
-          </section>
+            </article>
+          ))}
         </div>
       </section>
-    </main>
+
+      <section className="dashboard-panel">
+        <div className="dashboard-panel__heading">
+          <div>
+            <h2>Seus Projetos</h2>
+            <p>Últimos projetos adicionados</p>
+          </div>
+          <Link to="/repositorios" className="dashboard-panel__link">
+            Ver todos
+          </Link>
+        </div>
+
+        <div className="projects-table-wrapper">
+          <table className="projects-table">
+            <thead>
+              <tr>
+                <th>Nome do Projeto</th>
+                <th>Data</th>
+                <th><span className="sr-only">Ações</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {projects.map((project) => (
+                <tr key={project.id}>
+                  <td>{project.name}</td>
+                  <td>{project.date}</td>
+                  <td className="projects-table__action">
+                    <Link to="/repositorios">Ver</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <p className="dashboard-note">
+        Exibindo dados demonstrativos. Seus repositórios reais serão carregados após a integração com o backend.
+      </p>
+    </AppLayout>
   );
 }

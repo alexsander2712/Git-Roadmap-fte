@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 import BrandPanel from "../../components/BrandPanel";
@@ -78,9 +77,19 @@ export default function Cadastro() {
         <section className="auth-panel">
           <form className="auth-card" onSubmit={handleSubmit}>
             <header className="auth-card__heading">
+              <span className="auth-card__eyebrow">
+                {isLogin ? "BEM-VINDO DE VOLTA" : "COMECE AGORA"}
+              </span>
+
               <h2>{isLogin ? "Entrar" : "Criar conta"}</h2>
 
-              <p>
+              <p className="auth-card__description">
+                {isLogin
+                  ? "Acesse sua conta para acompanhar seus roadmaps."
+                  : "Crie sua conta para visualizar a evolução do seu código."}
+              </p>
+
+              <p className="auth-card__mode">
                 {isLogin
                   ? "Ainda não tem uma conta?"
                   : "Já tem uma conta?"}{" "}
@@ -166,7 +175,7 @@ export default function Cadastro() {
             {message && (
               <p
                 className={`auth-message auth-message--${messageType}`}
-                role="status"
+                role={messageType === "error" ? "alert" : "status"}
               >
                 {message}
               </p>

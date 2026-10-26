@@ -1,0 +1,330 @@
+/* Estilos específicos da página Configurações.
+   Layout (sidebar, topbar, rodapé) e elementos base ficam em components/AppLayout.css */
+
+.settings-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, 230px) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+/* ===== Abas ===== */
+
+.settings-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  border: 1px solid #e0e6ea;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 3px 12px #172b3b08;
+}
+
+.settings-tab {
+  min-height: 40px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #42505e;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  transition: background 0.2s, color 0.2s;
+}
+
+.settings-tab:hover {
+  background: #f3f6f8;
+  color: #142131;
+}
+
+.settings-tab.is-active {
+  background: #fff0ef;
+  box-shadow: inset 3px 0 #d83232;
+  color: #b52d2d;
+  font-weight: 700;
+}
+
+/* ===== Painel ===== */
+
+.settings-panel {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #e0e6ea;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 3px 12px #172b3b08;
+}
+
+.settings-panel__heading {
+  padding: 19px 20px;
+  border-bottom: 1px solid #e5e9ed;
+}
+
+.settings-panel__heading h2 {
+  margin: 0;
+  color: #172532;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+}
+
+.settings-panel__heading p {
+  margin: 5px 0 0;
+  color: #7b8791;
+  font-size: 11px;
+}
+
+.settings-panel__body {
+  padding: 20px;
+}
+
+.settings-panel__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #e5e9ed;
+}
+
+/* ===== Formulário ===== */
+
+.settings-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  max-width: 520px;
+}
+
+.settings-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #283744;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.settings-form input {
+  display: block;
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #d6dee4;
+  border-radius: 7px;
+  outline: none;
+  background: #fff;
+  color: #172532;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.settings-form input::placeholder {
+  color: #929ca5;
+}
+
+.settings-form input:focus {
+  border-color: #d83232;
+  box-shadow: 0 0 0 3px #d8323212;
+}
+
+/* ===== Opções ===== */
+
+.settings-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid #e8ecef;
+}
+
+.settings-option:first-of-type {
+  padding-top: 0;
+}
+
+.settings-option:last-of-type {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.settings-option > div {
+  min-width: 0;
+}
+
+.settings-option h3 {
+  margin: 0 0 5px;
+  color: #172532;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.settings-option p {
+  margin: 0;
+  color: #71808b;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.settings-option select {
+  flex-shrink: 0;
+  width: 190px;
+  max-width: 45%;
+  height: 37px;
+  padding: 0 25px 0 10px;
+  border: 1px solid #d9e0e5;
+  border-radius: 7px;
+  outline: none;
+  background: #fff;
+  color: #35434f;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+}
+
+.settings-option select:focus {
+  border-color: #d83232;
+  box-shadow: 0 0 0 3px #d8323212;
+}
+
+.settings-toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  width: 44px;
+  height: 24px;
+  padding: 3px;
+  border: 0;
+  border-radius: 999px;
+  background: #c5cdd4;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.settings-toggle span {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px #00000029;
+  transition: transform 0.2s;
+}
+
+.settings-toggle.is-on {
+  background: #d83232;
+}
+
+.settings-toggle.is-on span {
+  transform: translateX(20px);
+}
+
+.settings-secondary-button {
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid #d8dfe4;
+  border-radius: 7px;
+  background: #fff;
+  color: #465562;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.settings-secondary-button:hover {
+  border-color: #b7c1c9;
+  background: #f7f9fa;
+}
+
+.settings-hint {
+  margin: 18px 0 0;
+  color: #77838d;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.settings-tab:focus-visible,
+.settings-toggle:focus-visible,
+.settings-secondary-button:focus-visible,
+.settings-panel__footer .app-button:focus-visible {
+  outline: 3px solid #d8323259;
+  outline-offset: 2px;
+}
+
+/* ===== Responsivo ===== */
+
+@media (max-width: 1000px) {
+  .settings-layout {
+    grid-template-columns: minmax(160px, 200px) minmax(0, 1fr);
+    gap: 18px;
+  }
+}
+
+@media (max-width: 800px) {
+  .settings-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings-tabs {
+    flex-direction: row;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 6px;
+    scrollbar-width: thin;
+  }
+
+  .settings-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .settings-tab.is-active {
+    box-shadow: inset 0 -3px #d83232;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-panel__heading,
+  .settings-panel__footer {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .settings-panel__body {
+    padding: 16px 14px;
+  }
+
+  .settings-option {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .settings-option > div {
+    flex: 1 1 100%;
+  }
+
+  .settings-option select {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .settings-panel__footer .app-button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-toggle,
+  .settings-toggle span,
+  .settings-tab {
+    transition: none;
+  }
+}
