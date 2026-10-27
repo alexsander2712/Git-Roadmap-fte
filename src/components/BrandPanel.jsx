@@ -1,5 +1,4 @@
-
-import Logo from "./Logo";
+import logo from "../assets/logo.png";
 import "./BrandPanel.css";
 
 const benefits = [
@@ -11,7 +10,7 @@ const benefits = [
 export default function BrandPanel() {
   return (
     <aside className="brand-panel">
-      <Logo />
+      <img className="brand-panel__logo" src={logo} alt="GitRoadmap" />
 
       <div className="brand-panel__content">
         <h1>

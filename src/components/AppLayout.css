@@ -25,30 +25,22 @@
 .app-brand {
   display: flex;
   align-items: center;
-  gap: 5px;
   min-height: 65px;
-  padding: 0 13px;
+  padding: 0 16px;
   border-bottom: 1px solid #ffffff12;
-  color: #e34240;
   text-decoration: none;
 }
 
-.app-brand svg {
-  width: 36px;
-  flex: 0 0 36px;
+.app-brand__logo {
+  display: block;
+  width: auto;
+  height: 52px;
 }
 
-.app-brand span {
-  font-size: 14px;
-  letter-spacing: -0.5px;
-}
-
-.app-brand b {
-  color: #f5f7fa;
-}
-
-.app-brand strong {
-  color: #e34240;
+.app-brand__icon {
+  display: none;
+  width: 40px;
+  height: auto;
 }
 
 .app-nav {
@@ -248,6 +240,74 @@
   cursor: pointer;
 }
 
+/* ===== Navegação no topo (navigation="top") ===== */
+
+.app-shell--top {
+  flex-direction: column;
+}
+
+.app-topnav {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 65px;
+  padding: 0 clamp(14px, 2.5vw, 28px);
+  background: #091b2a;
+  color: #e5edf3;
+}
+
+.app-topnav .app-brand {
+  min-height: 0;
+  padding: 0;
+  border-bottom: 0;
+}
+
+.app-topnav .app-brand__logo {
+  height: 46px;
+}
+
+.app-nav--top {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  align-content: normal;
+  gap: 4px;
+  padding: 0;
+}
+
+.app-nav--top .app-nav__item {
+  min-height: 65px;
+  padding: 0 13px;
+  border-radius: 0;
+}
+
+.app-nav--top .app-nav__item.is-active {
+  box-shadow: inset 0 -3px #e34240;
+}
+
+.app-nav--top .app-nav__item:last-child {
+  margin-left: auto;
+}
+
+.app-shell--top .app-content {
+  flex: 1;
+}
+
+@media (max-width: 760px) {
+  .app-topnav {
+    gap: 10px;
+    min-height: 58px;
+  }
+
+  .app-nav--top .app-nav__item {
+    min-height: 58px;
+    padding: 0 10px;
+  }
+}
+
 /* ===== Responsivo ===== */
 
 @media (max-width: 760px) {
@@ -260,7 +320,11 @@
     padding: 0 8px;
   }
 
-  .app-brand span,
+  .app-brand__icon {
+    display: block;
+  }
+
+  .app-brand__logo,
   .app-nav__item span,
   .app-sidebar__footer > div {
     display: none;

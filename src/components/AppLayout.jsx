@@ -1,5 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import Icon from "./Icon";
+import logo from "../assets/logo.png";
+import logoIcon from "../assets/logo-icon.png";
 import "./AppLayout.css";
 
 // `match` define quais rotas deixam o item ativo (ex.: /roadmaps/1 mantém "Meus Projetos" ativo).
@@ -15,44 +17,77 @@ const navItems = [
  * Layout padrão das páginas internas.
  *
  * Props:
- * - breadcrumb: texto exibido após "Área de trabalho /" na topbar (ex.: "Meus Projetos")
+ * - breadcrumb: texto exibido após "Área de trabalho /" na topbar (modo "sidebar")
+ * - navigation: "sidebar" (padrão) mostra o menu lateral; "top" remove o menu lateral
+ *   e coloca a navegação em uma barra no topo, deixando a página com mais largura
  * - children: conteúdo da página
  */
-export default function AppLayout({ breadcrumb, children }) {
+export default function AppLayout({ breadcrumb, navigation = "sidebar", children }) {
   const { pathname } = useLocation();
+
+  const brand = (
+    <Link to="/dashboard" className="app-brand" aria-label="GitRoadmap, início">
+      <img className="app-brand__logo" src={logo} alt="GitRoadmap" />
+      <img className="app-brand__icon" src={logoIcon} alt="" aria-hidden="true" />
+    </Link>
+  );
+
+  const links = navItems.map((item) => {
+    const isActive =
+      item.match.some((route) => pathname.startsWith(route)) ||
+      (item.to === "/dashboard" && pathname === "/");
+
+    return (
+      <Link
+        key={item.to}
+        to={item.to}
+        className={`app-nav__item${isActive ? " is-active" : ""}`}
+        aria-current={isActive ? "page" : undefined}
+      >
+        <Icon name={item.icon} />
+        <span>{item.label}</span>
+      </Link>
+    );
+  });
+
+  const footer = (
+    <footer className="app-footer">
+      <span>GitRoadmap · Visualize a evolução do seu código.</span>
+      <span>Versão de demonstração</span>
+    </footer>
+  );
+
+  if (navigation === "top") {
+    return (
+      <main className="app-shell app-shell--top">
+        <header className="app-topnav">
+          {brand}
+
+          <nav className="app-nav app-nav--top" aria-label="Navegação principal">
+            {links}
+          </nav>
+
+          <button className="app-topbar__user" type="button" title="Conta do usuário">
+            <Icon name="user" />
+            <span>Minha conta</span>
+          </button>
+        </header>
+
+        <div className="app-content">
+          {children}
+          {footer}
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="app-shell">
       <aside className="app-sidebar">
-        <Link to="/dashboard" className="app-brand">
-          <svg viewBox="0 0 50 36" aria-hidden="true">
-            <g fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-              <path d="M4 18h12L27 7h12M16 18l11 11h12M27 7v22" />
-            </g>
-            <circle cx="4" cy="18" r="3.5" fill="currentColor" />
-            <circle cx="39" cy="7" r="3.5" fill="currentColor" />
-            <circle cx="39" cy="29" r="3.5" fill="currentColor" />
-          </svg>
-          <span><b>Git</b><strong>Roadmap</strong></span>
-        </Link>
+        {brand}
 
         <nav className="app-nav" aria-label="Navegação principal">
-          {navItems.map((item) => {
-            const isActive =
-              item.match.some((route) => pathname.startsWith(route)) ||
-              (item.to === "/dashboard" && pathname === "/");
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`app-nav__item${isActive ? " is-active" : ""}`}
-                aria-current={isActive ? "page" : undefined}
-              >
-                <Icon name={item.icon} />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
+          {links}
         </nav>
 
         <div className="app-sidebar__footer">
@@ -75,11 +110,7 @@ export default function AppLayout({ breadcrumb, children }) {
 
         <div className="app-content">
           {children}
-
-          <footer className="app-footer">
-            <span>GitRoadmap · Visualize a evolução do seu código.</span>
-            <span>Versão de demonstração</span>
-          </footer>
+          {footer}
         </div>
       </section>
     </main>
