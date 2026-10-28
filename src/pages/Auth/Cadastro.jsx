@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import BrandPanel from "../../components/BrandPanel";
 import AuthInput from "../../components/AuthInput";
+import { saveSession } from "../../auth/session";
 
 import "./Cadastro.css";
 
 export default function Cadastro() {
+  const navigate = useNavigate();
+  const redirectTimer = useRef(null);
   const [isLogin, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("error");
+
+  useEffect(() => () => window.clearTimeout(redirectTimer.current), []);
 
   function toggleMode() {
     setIsLogin((current) => !current);
@@ -60,12 +66,20 @@ export default function Cadastro() {
       }
     }
 
+    // Sessão simulada no navegador: a autenticação real será feita pelo servidor.
+    saveSession({ name: nome || email.split("@")[0], login: email });
+
     setMessageType("success");
 
     setMessage(
       isLogin
-        ? "Validação concluída! A autenticação será conectada ao servidor posteriormente."
-        : "Validação concluída! O cadastro será conectado ao servidor posteriormente."
+        ? "Acesso liberado em modo demonstrativo. Redirecionando..."
+        : "Conta criada em modo demonstrativo. Redirecionando..."
+    );
+
+    redirectTimer.current = window.setTimeout(
+      () => navigate("/dashboard"),
+      900
     );
   }
 

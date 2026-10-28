@@ -20,6 +20,7 @@
   min-height: 540px;
   background: #091b2a;
   color: #e5edf3;
+  transition: flex-basis 0.2s ease;
 }
 
 .app-brand {
@@ -80,6 +81,17 @@
   margin-top: auto;
   padding: 18px 13px;
   border-top: 1px solid #ffffff18;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.app-sidebar__footer:hover {
+  background: #ffffff0d;
+}
+
+.app-sidebar__footer > div {
+  min-width: 0;
 }
 
 .app-avatar {
@@ -101,11 +113,19 @@
 }
 
 .app-sidebar__footer strong {
+  max-width: 128px;
+  overflow: hidden;
   font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .app-sidebar__footer small {
+  max-width: 128px;
+  overflow: hidden;
   margin-top: 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #a8b6c2;
   font-size: 11px;
 }
@@ -128,6 +148,31 @@
   font-size: 12px;
 }
 
+.app-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.app-topbar__toggle {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  border: 1px solid #ffffff22;
+  border-radius: 7px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.app-topbar__toggle:hover {
+  background: #ffffff14;
+}
+
 .app-topbar__user {
   display: flex;
   align-items: center;
@@ -138,6 +183,19 @@
   background: transparent;
   color: #fff;
   font: inherit;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.app-topbar__user:hover {
+  background: #ffffff14;
+}
+
+.app-topbar__toggle:focus-visible,
+.app-topbar__user:focus-visible,
+.app-sidebar__footer:focus-visible {
+  outline: 2px solid #e34240;
+  outline-offset: -2px;
 }
 
 .app-content {
@@ -308,6 +366,41 @@
   }
 }
 
+/* ===== Menu lateral recolhido ===== */
+
+.app-shell--collapsed .app-sidebar {
+  flex-basis: 62px;
+}
+
+.app-shell--collapsed .app-brand {
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.app-shell--collapsed .app-brand__logo,
+.app-shell--collapsed .app-nav__item span,
+.app-shell--collapsed .app-sidebar__footer > div {
+  display: none;
+}
+
+.app-shell--collapsed .app-brand__icon {
+  display: block;
+}
+
+.app-shell--collapsed .app-nav {
+  padding: 15px 7px;
+}
+
+.app-shell--collapsed .app-nav__item {
+  justify-content: center;
+  padding: 0;
+}
+
+.app-shell--collapsed .app-sidebar__footer {
+  justify-content: center;
+  padding: 15px 5px;
+}
+
 /* ===== Responsivo ===== */
 
 @media (max-width: 760px) {
@@ -353,6 +446,10 @@
     display: none;
   }
 
+  .app-topbar__toggle {
+    display: none;
+  }
+
   .app-content {
     padding: 22px 14px;
   }
@@ -368,5 +465,11 @@
 
   .app-footer {
     flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-sidebar {
+    transition: none;
   }
 }
