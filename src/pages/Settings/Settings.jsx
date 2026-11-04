@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import AppLayout from "../../components/AppLayout";
+import { useAuth } from "../../auth/AuthContext";
 import Icon from "../../components/Icon";
 import "./Settings.css";
 
@@ -49,21 +50,26 @@ function Toggle({ checked, onChange, label }) {
 export default function Settings() {
   const [activeTab, setActiveTab] = useState("Conta");
 
-  const [name, setName] = useState("Alexsander Ribeiro");
-  const [username, setUsername] = useState("alexsander");
-  const [email, setEmail] = useState("alex@email.com");
+  // valores iniciais vindos da API (GET /api/auth/me). Ainda não há endpoint para
+  // salvar, então as alterações valem apenas enquanto a página está aberta.
+  const { user } = useAuth();
+  const prefs = user?.usuario_preferencia;
 
-  const [theme, setTheme] = useState("light");
+  const [name, setName] = useState(user?.nome ?? "");
+  const [username, setUsername] = useState(user?.username ?? "");
+  const [email, setEmail] = useState(user?.email ?? "");
+
+  const [theme, setTheme] = useState(prefs?.tema ?? "light");
 
   const [notifications, setNotifications] = useState({
-    updates: true,
-    email: false,
-    roadmap: true,
+    updates: prefs?.notif_projeto ?? true,
+    email: prefs?.notif_email ?? false,
+    roadmap: prefs?.notif_roadmap ?? true,
   });
 
   const [privacy, setPrivacy] = useState({
-    profile: true,
-    activity: false,
+    profile: prefs?.perfil_publico ?? true,
+    activity: prefs?.exibir_atividade ?? false,
   });
 
   const [githubConnected, setGithubConnected] = useState(false);

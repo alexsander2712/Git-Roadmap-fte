@@ -218,6 +218,18 @@
   transform: translateY(-1px);
 }
 
+.auth-card__submit:disabled {
+  background: #c97777;
+  box-shadow: none;
+  cursor: wait;
+  transform: none;
+}
+
+.auth-card__switch:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .auth-card__submit:active {
   transform: translateY(2px);
   box-shadow: none;
@@ -247,6 +259,12 @@
   border-color: #f1c9c7;
   background: #fff0ef;
   color: #b42323;
+}
+
+.auth-message--info {
+  border-color: #c9d9ea;
+  background: #eef5fc;
+  color: #24527f;
 }
 
 .auth-message--success {

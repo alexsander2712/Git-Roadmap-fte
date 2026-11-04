@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "./Icon";
-import { clearSession, getSession } from "../auth/session";
+import { useAuth } from "../auth/AuthContext";
 import logo from "../assets/logo.png";
 import logoIcon from "../assets/logo-icon.png";
 import "./AppLayout.css";
@@ -37,12 +37,11 @@ export default function AppLayout({ breadcrumb, navigation = "sidebar", children
   const { pathname } = useLocation();
   const [collapsed, setCollapsed] = useState(readCollapsed);
 
-  // Sessão simulada (localStorage). Com backend, troque por dados da autenticação real.
-  const session = getSession();
-  const accountPath = session ? "/perfil" : "/cadastro";
-  const accountTitle = session ? "Abrir meu perfil" : "Entrar ou cadastrar-se";
-  const accountName = session ? session.name || "Minha conta" : "Entrar";
-  const accountInitial = session ? (session.name || session.login || "U").trim().charAt(0).toUpperCase() : "";
+  const { user, logout } = useAuth();
+  const accountPath = user ? "/perfil" : "/cadastro";
+  const accountTitle = user ? "Abrir meu perfil" : "Entrar ou cadastrar-se";
+  const accountName = user ? user.nome || user.username : "Entrar";
+  const accountInitial = user ? (user.nome || user.username || "U").trim().charAt(0).toUpperCase() : "";
 
   function toggleSidebar() {
     const next = !collapsed;
@@ -64,7 +63,7 @@ export default function AppLayout({ breadcrumb, navigation = "sidebar", children
 
   const items = [
     ...navItems,
-    session
+    user
       ? { to: "/cadastro", icon: "logout", label: "Sair", match: [], logout: true }
       : { to: "/cadastro", icon: "logout", label: "Entrar", match: [] },
   ];
@@ -82,7 +81,7 @@ export default function AppLayout({ breadcrumb, navigation = "sidebar", children
         aria-label={item.label}
         className={`app-nav__item${isActive ? " is-active" : ""}`}
         aria-current={isActive ? "page" : undefined}
-        onClick={item.logout ? clearSession : undefined}
+        onClick={item.logout ? logout : undefined}
       >
         <Icon name={item.icon} />
         <span>{item.label}</span>
@@ -93,7 +92,7 @@ export default function AppLayout({ breadcrumb, navigation = "sidebar", children
   const userButton = (
     <Link to={accountPath} className="app-topbar__user" title={accountTitle}>
       <Icon name="user" />
-      <span>{session ? "Minha conta" : "Entrar"}</span>
+      <span>{user ? "Minha conta" : "Entrar"}</span>
     </Link>
   );
 
@@ -136,11 +135,11 @@ export default function AppLayout({ breadcrumb, navigation = "sidebar", children
 
         <Link to={accountPath} className="app-sidebar__footer" title={accountTitle}>
           <span className="app-avatar">
-            {session ? accountInitial : <Icon name="user" size={17} />}
+            {user ? accountInitial : <Icon name="user" size={17} />}
           </span>
           <div>
             <strong>{accountName}</strong>
-            <small>{session ? session.login : "Acesse sua conta"}</small>
+            <small>{user ? `@${user.username}` : "Acesse sua conta"}</small>
           </div>
         </Link>
       </aside>

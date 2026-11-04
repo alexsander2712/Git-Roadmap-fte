@@ -1,15 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
+import { useAuth } from "../../auth/AuthContext";
 import Icon from "../../components/Icon";
 import "./Profile.css";
-
-const initialProfile = {
-  name: "Alexsander Caldeirão Ribeiro Filho",
-  email: "alexsander@email.com",
-  username: "alexsander",
-  bio: "Estudante de desenvolvimento de sistemas.",
-};
 
 const projects = [
   {
@@ -77,11 +71,25 @@ function ProjectMark({ project }) {
 }
 
 export default function Profile() {
+  const { user } = useAuth();
+
+  // dados vindos da API (GET /api/auth/me). A API ainda não tem endpoint para salvar
+  // alterações do perfil, então a edição vale apenas enquanto a página está aberta.
+  const [initialProfile] = useState(() => ({
+    name: user?.nome ?? "",
+    email: user?.email ?? "",
+    username: user?.username ?? "",
+    bio: user?.bio ?? "",
+  }));
   const [profile, setProfile] = useState(initialProfile);
   const [draft, setDraft] = useState(initialProfile);
   const [editing, setEditing] = useState(false);
   const [notice, setNotice] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(user?.foto_url ?? "");
+
+  const lastAccess = user?.ultimo_acesso
+    ? new Date(user.ultimo_acesso).toLocaleDateString("pt-BR")
+    : "—";
 
   function startEditing() {
     setDraft(profile);
@@ -326,7 +334,7 @@ export default function Profile() {
               </article>
               <article className="profile-stat">
                 <span className="profile-stat__icon profile-stat__icon--green"><Icon name="calendar" size={18} /></span>
-                <div><span>Último acesso</span><strong className="profile-stat__date">10/09/2026</strong></div>
+                <div><span>Último acesso</span><strong className="profile-stat__date">{lastAccess}</strong></div>
               </article>
             </div>
           </section>
