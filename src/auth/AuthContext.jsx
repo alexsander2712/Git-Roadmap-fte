@@ -1,13 +1,44 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
 import { getMe, loginRequest, registerRequest } from "../api/client";
-import { clearSession, getSession, getToken, saveSession, saveUser } from "./session";
+import { UNAUTHORIZED_EVENT } from "../api/http";
+import {
+  clearSession,
+  getSession,
+  getToken,
+  saveSession,
+  saveUser,
+} from "./session";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  // Começa com o usuário guardado (a tela abre na hora) e confirma o token com a API em segundo plano.
   const [user, setUser] = useState(() => getSession()?.user ?? null);
-  const [loading, setLoading] = useState(() => Boolean(getToken()) && !getSession()?.user);
+  const [loading, setLoading] = useState(
+    () => Boolean(getToken()) && !getSession()?.user
+  );
+
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      clearSession();
+      setUser(null);
+      setLoading(false);
+    };
+
+    window.addEventListener(UNAUTHORIZED_EVENT, handleUnauthorized);
+
+    return () => {
+      window.removeEventListener(UNAUTHORIZED_EVENT, handleUnauthorized);
+    };
+  }, []);
 
   useEffect(() => {
     const token = getToken();
@@ -28,8 +59,6 @@ export function AuthProvider({ children }) {
       .catch((error) => {
         if (ignore) return;
 
-        // token expirado/inválido ou usuário removido: encerra a sessão.
-        // Falha de rede ou 500 não derruba a sessão (mantém o usuário guardado).
         if (error.status === 401 || error.status === 404) {
           clearSession();
           setUser(null);
@@ -49,20 +78,23 @@ export function AuthProvider({ children }) {
 
     saveSession({ token, user: basic });
 
-    // o login devolve poucos campos; /me traz o perfil completo e as preferências
     let full = basic;
+
     try {
       full = (await getMe(token)).user;
       saveSession({ token, user: full });
     } catch {
-      // segue com os dados básicos
+      // Mantém os dados básicos caso /me falhe.
     }
 
     setUser(full);
     return full;
   }, []);
 
-  const register = useCallback((data) => registerRequest(data), []);
+  const register = useCallback(
+    (data) => registerRequest(data),
+    []
+  );
 
   const logout = useCallback(() => {
     clearSession();
@@ -70,11 +102,22 @@ export function AuthProvider({ children }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, loading, isAuthenticated: Boolean(user), login, register, logout }),
+    () => ({
+      user,
+      loading,
+      isAuthenticated: Boolean(user),
+      login,
+      register,
+      logout,
+    }),
     [user, loading, login, register, logout]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {

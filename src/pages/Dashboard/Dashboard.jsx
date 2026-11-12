@@ -1,19 +1,15 @@
+
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
+import { getRepositories } from "../../api/github";
 import "./Dashboard.css";
 
-const roadmaps = [
-  { id: 1, name: "SistemaAcadêmico", variant: 1 },
-  { id: 2, name: "Portal Aluno", variant: 2 },
-  { id: 3, name: "API Core", variant: 3 },
-  { id: 4, name: "Landing Page", variant: 4 },
-];
+function formatDate(date) {
+  if (!date) return "Não disponível";
 
-const projects = [
-  { id: 1, name: "Academy Quest", date: "28/08/2026" },
-  { id: 2, name: "Eco2Eco", date: "28/08/2026" },
-  { id: 3, name: "AdivinhaAiDev", date: "20/08/2026" },
-];
+  return new Date(date).toLocaleDateString("pt-BR");
+}
 
 function RoadmapPreview({ variant }) {
   const graphs = {
@@ -126,6 +122,58 @@ function RoadmapPreview({ variant }) {
 }
 
 export default function Dashboard() {
+  const [repositories, setRepositories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadRepositories() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await getRepositories();
+
+        if (active) {
+          setRepositories(
+            Array.isArray(response?.repositories)
+              ? response.repositories
+              : []
+          );
+        }
+      } catch (err) {
+        if (active) {
+          setError(
+            err.message || "Não foi possível carregar seus repositórios."
+          );
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadRepositories();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  function getRepositoryOwner(repository) {
+    return repository.owner || repository.full_name?.split("/")[0];
+  }
+
+  function getRoadmapUrl(repository) {
+    const owner = getRepositoryOwner(repository);
+    const repo = repository.name;
+
+    return `/roadmaps/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;
+  }
+
   return (
     <AppLayout breadcrumb="Início">
       <header className="app-page-heading">
@@ -140,25 +188,45 @@ export default function Dashboard() {
         <div className="dashboard-panel__heading">
           <div>
             <h2>Seus Roadmaps</h2>
-            <p>{roadmaps.length} roadmaps disponíveis</p>
+            <p>
+              {loading
+                ? "Carregando roadmaps..."
+                : `${repositories.length} roadmaps disponíveis`}
+            </p>
           </div>
         </div>
 
         <div className="roadmap-grid">
-          {roadmaps.map((roadmap) => (
-            <article className="roadmap-card" key={roadmap.id}>
-              <div className="roadmap-card__preview">
-                <RoadmapPreview variant={roadmap.variant} />
-              </div>
-              <h3 title={roadmap.name}>{roadmap.name}</h3>
-              <Link
-                className="roadmap-card__button"
-                to={`/roadmaps/${roadmap.id}`}
+          {loading ? (
+            <p>Carregando seus repositórios...</p>
+          ) : error ? (
+            <p>{error}</p>
+          ) : repositories.length === 0 ? (
+            <p>
+              Nenhum repositório encontrado. Conecte sua conta do GitHub
+              para começar.
+            </p>
+          ) : (
+            repositories.map((repository, index) => (
+              <article
+                className="roadmap-card"
+                key={repository.id || repository.full_name}
               >
-                Ver
-              </Link>
-            </article>
-          ))}
+                <div className="roadmap-card__preview">
+                  <RoadmapPreview variant={(index % 4) + 1} />
+                </div>
+
+                <h3 title={repository.name}>{repository.name}</h3>
+
+                <Link
+                  className="roadmap-card__button"
+                  to={getRoadmapUrl(repository)}
+                >
+                  Ver
+                </Link>
+              </article>
+            ))
+          )}
         </div>
       </section>
 
@@ -166,8 +234,9 @@ export default function Dashboard() {
         <div className="dashboard-panel__heading">
           <div>
             <h2>Seus Projetos</h2>
-            <p>Últimos projetos adicionados</p>
+            <p>Repositórios recentemente atualizados</p>
           </div>
+
           <Link to="/repositorios" className="dashboard-panel__link">
             Ver todos
           </Link>
@@ -179,26 +248,47 @@ export default function Dashboard() {
               <tr>
                 <th>Nome do Projeto</th>
                 <th>Data</th>
-                <th><span className="sr-only">Ações</span></th>
+                <th>
+                  <span className="sr-only">Ações</span>
+                </th>
               </tr>
             </thead>
+
             <tbody>
-              {projects.map((project) => (
-                <tr key={project.id}>
-                  <td>{project.name}</td>
-                  <td>{project.date}</td>
-                  <td className="projects-table__action">
-                    <Link to="/repositorios">Ver</Link>
+              {loading ? (
+                <tr>
+                  <td colSpan="3">Carregando projetos...</td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td colSpan="3">{error}</td>
+                </tr>
+              ) : repositories.length === 0 ? (
+                <tr>
+                  <td colSpan="3">
+                    Nenhum projeto encontrado.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                repositories.map((repository) => (
+                  <tr
+                    key={repository.id || repository.full_name}
+                  >
+                    <td>{repository.name}</td>
+                    <td>{formatDate(repository.updated_at)}</td>
+                    <td className="projects-table__action">
+                      <Link to="/repositorios">Ver</Link>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
       </section>
 
       <p className="dashboard-note">
-        Exibindo dados demonstrativos. Seus repositórios reais serão carregados após a integração com o backend.
+        Seus repositórios são carregados diretamente da sua conta GitHub.
       </p>
     </AppLayout>
   );
